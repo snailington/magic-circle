@@ -28,6 +28,6 @@ export class BroadcastBridge implements IBridge {
     }
     
     send(reply: RPC) {
-        this.channel.postMessage(reply);
+        this.channel.postMessage(JSON.stringify(reply));
     }
 }
