@@ -1,4 +1,4 @@
-import {ErrorRPC, OpenRPC, ReplyRPC} from "../RPC.ts";
+import {ErrorRPC, OpenRPC, ReplyRPC} from "magic-circle-api";
 
 
 export interface IBridge {

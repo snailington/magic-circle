@@ -1,5 +1,5 @@
 import {IBridge} from "./drivers/IBridge.ts";
-import {MsgRPC, RPC, SetRPC} from "./RPC.ts";
+import {MsgRPC, RPC, SetRPC} from "magic-circle-api";
 import OBR from "@owlbear-rodeo/sdk";
 
 const METAID = "moe.snail.magic-circle";

@@ -1,5 +1,5 @@
 import {IBridge} from "./IBridge.ts";
-import {RPC} from "../RPC.ts";
+import {RPC} from "magic-circle-api";
 import OBR from "@owlbear-rodeo/sdk";
 
 // Communication over a browser BroadcastChannel
