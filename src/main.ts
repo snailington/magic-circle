@@ -27,8 +27,11 @@ OBR.onReady(async () => {
   const config = JSON.parse(window.localStorage.getItem(configKey) || "{}");
   
   const bridges = config.bridges || [];
-  bridges.push({name: "bc", type: "broadcast", perms: "rwc"})
+  bridges.push({name: "bc", type: "broadcast", perms: "rwc"});
   
+  // TODO: for the time being let's hardcode the knock bridge until the configurator is done
+  bridges.push({name: "knock", type: "websocket", perms: "rwc", url: "http://localhost:12210"});
+
   try {
     for(const bridge of bridges) {
       let driver: IBridge;
