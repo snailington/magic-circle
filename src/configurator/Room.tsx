@@ -1,12 +1,12 @@
 import IRoomInfo from "./IRoomInfo.ts";
-import {useState} from "react";
+import {ChangeEvent, useState} from "react";
 
 export default function Room({room}: {room: IRoomInfo}) {
     const [config, setConfig] = useState(() =>
         JSON.parse(window.localStorage.getItem(`magic-circle-config.{room.id}`) || "{}")
     )
     
-    function onNameChange(evt: InputEvent) {
+    function onNameChange(evt: ChangeEvent<HTMLInputElement>) {
         config.name = evt.target?.value;
         setConfig(config);
     }
