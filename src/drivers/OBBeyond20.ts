@@ -69,7 +69,6 @@ export class OBBeyond20 implements IBridge {
             cmd: "msg",
             type: "dice",
             text: `${evt.title} ${sets[0].type} (${sets[0].formula}) [${results.join(', ')}]`,
-            time: Date.now(),
             author: evt.character,
             metadata: {
                 dice: dice,
