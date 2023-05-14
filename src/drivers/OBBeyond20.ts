@@ -4,10 +4,7 @@ import {MsgRPC} from "magic-circle-api";
 // Bridges gludington's beyond20 fork into the Magic Circle bus
 export class OBBeyond20 implements IBridge {
     open(callback: (packet: any) => void): Promise<void> {
-        console.log("obb20");
         window.addEventListener("message", (e) => {
-            console.log("event received", e);
-            
             if(!e.origin.match(/owlbear.(app|rodeo)$/)) return;
             if(!e.data?.DdbEvent) return;
             
