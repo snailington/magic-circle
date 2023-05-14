@@ -1,5 +1,5 @@
 import {IBridge} from "./IBridge.ts";
-import {MsgRPC, RPC} from "magic-circle-api";
+import {MsgRPC} from "magic-circle-api";
 
 // Bridges gludington's beyond20 fork into the Magic Circle bus
 export class OBBeyond20 implements IBridge {
