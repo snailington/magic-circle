@@ -1,8 +1,6 @@
 import {IBridge} from "./drivers/IBridge.ts";
-import {MsgRPC, RPC, SetRPC} from "magic-circle-api";
+import MagicCircle, {MsgRPC, RPC, SetRPC} from "magic-circle-api";
 import OBR from "@owlbear-rodeo/sdk";
-
-const METAID = "moe.snail.magic-circle";
 
 class BridgeInfo {
     bridge: IBridge;
@@ -111,7 +109,7 @@ export class Dispatcher {
                 await this.dispatch_set(packet as SetRPC);
                 break;
             case "msg":
-                await this.dispatch_msg(packet as MsgRPC);
+                await MagicCircle.sendMessage(packet as MsgRPC);
                 break;
         }
     }
@@ -123,27 +121,5 @@ export class Dispatcher {
                 md[packet.key] = packet.value;
                 await OBR.room.setMetadata(md);
         }
-    }
-    
-    private async dispatch_msg(msg: MsgRPC) {
-        const metadata = await OBR.room.getMetadata();
-
-        let messages: any = metadata[`${METAID}/messages`];
-
-        if(msg.text.length > 200) msg.text = msg.text.substring(0, 200);
-
-        if(!messages || !(messages instanceof Array)) messages = new Array<MsgRPC>();
-        messages.push({
-            time: msg.time || Date.now(),
-            type: msg.type,
-            text: msg.text,
-            author: msg.author,
-            metadata: msg.metadata
-        });
-        if(messages.length >= 5) messages.shift();
-
-        const update: Partial<any> = {};
-        update[`${METAID}/messages`] = messages;
-        await OBR.room.setMetadata(update);
     }
 }
