@@ -13,7 +13,6 @@ export class BroadcastBridge implements IBridge {
     open(callback: (packet: any)=>void): Promise<void> {
         this.channel.onmessage = (evt: MessageEvent<any>) => {
             const packet = JSON.parse(evt.data);
-            console.log("bc receive", packet);
             if(packet.cmd == "open" || packet.cmd == "reply" ||
                 (packet.room && packet.room != OBR.room.id)) return;
             

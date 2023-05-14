@@ -3,16 +3,25 @@ import {MsgRPC} from "magic-circle-api";
 
 // Bridges gludington's beyond20 fork into the Magic Circle bus
 export class OBBeyond20 implements IBridge {
+    active = false;
+
     open(callback: (packet: any) => void): Promise<void> {
         window.addEventListener("message", (e) => {
             if(!e.origin.match(/owlbear.(app|rodeo)$/)) return;
+            if(e.data?.DdbRegistration) this.active = true;
             if(!e.data?.DdbEvent) return;
             
             this.parseEvent(e.data.DdbEvent, callback);
         });
         
-        const regMsg = { action: "DdbRegister", id: "moe.snail.magic-circle" };
-        window.parent.postMessage(regMsg, "*");
+        let tries = 3;
+        const tryRegister = () => {
+            if(this.active || tries-- < 0) return;
+            const regMsg = { action: "DdbRegister", id: "moe.snail.magic-circle" };
+            window.parent.postMessage(regMsg, "*");
+            setTimeout(tryRegister, 2500);
+        }
+        tryRegister();
         
         return Promise.resolve();
     }

@@ -42,15 +42,15 @@ OBR.onReady(async () => {
         case "broadcast":
           driver = new BroadcastBridge();
           break;
-          case "websocket":
-            driver = new WSBridge(bridge.url);
-            break;
-          case "obbeyond20":
-            driver = new OBBeyond20();
-            break;
-          default:
-            console.log(`magic-circle: unknown bridge type ${bridge.type} (${bridge.name})`);
-            continue;
+        case "websocket":
+          driver = new WSBridge(bridge.url);
+          break;
+        case "obbeyond20":
+          driver = new OBBeyond20();
+          break;
+        default:
+          console.log(`magic-circle: unknown bridge type ${bridge.type} (${bridge.name})`);
+          continue;
       }
 
       await dispatcher.install(bridge.name, driver, bridge.perms);
