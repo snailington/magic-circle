@@ -4,6 +4,7 @@ import {Dispatcher} from "./Dispatcher.ts";
 import {BroadcastBridge} from "./drivers/BroadcastBridge.ts";
 import {IBridge} from "./drivers/IBridge.ts";
 import {WSBridge} from "./drivers/WSBridge.ts";
+import {OBBeyond20} from "./drivers/OBBeyond20.ts";
 
 const dispatcher = new Dispatcher();
 
@@ -31,6 +32,7 @@ OBR.onReady(async () => {
   
   // TODO: for the time being let's hardcode the knock bridge until the configurator is done
   bridges.push({name: "knock", type: "websocket", perms: "rwc", url: "ws://localhost:12210"});
+  bridges.push({name: "obb20", type: "obbeyond20", perms: "w"});
 
   try {
     for(const bridge of bridges) {
@@ -43,9 +45,12 @@ OBR.onReady(async () => {
           case "websocket":
             driver = new WSBridge(bridge.url);
             break;
-            default:
-              console.log(`magic-circle: unknown bridge type ${bridge.type} (${bridge.name})`);
-              continue;
+          case "obbeyond20":
+            driver = new OBBeyond20();
+            break;
+          default:
+            console.log(`magic-circle: unknown bridge type ${bridge.type} (${bridge.name})`);
+            continue;
       }
 
       await dispatcher.install(bridge.name, driver, bridge.perms);
