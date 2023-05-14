@@ -9,11 +9,13 @@ import {OBBeyond20} from "./drivers/OBBeyond20.ts";
 const dispatcher = new Dispatcher();
 
 OBR.onReady(async () => {
+  /*
   // check if we're allowed to run the dispatcher
   const role = await OBR.player.getRole();
   const metadata = await OBR.room.getMetadata();
   if(role != "GM" && !metadata["moe.snail.magic-circle/allowPlayerRPC"])
     return;
+  */
   
   // check if this room is in the detected rooms list, add it if not
   const roomList = JSON.parse(window.localStorage.getItem("magic-circle-rooms") || "{}");
@@ -34,10 +36,12 @@ OBR.onReady(async () => {
   bridges.push({name: "knock", type: "websocket", perms: "rwc", url: "ws://localhost:12210"});
   bridges.push({name: "obb20", type: "obbeyond20", perms: "w"});
 
-  try {
-    for(const bridge of bridges) {
-      let driver: IBridge;
+  console.log(bridges);
 
+  for(const bridge of bridges) {
+    let driver: IBridge;
+
+    try {
       switch(bridge.type) {
         case "broadcast":
           driver = new BroadcastBridge();
@@ -52,10 +56,10 @@ OBR.onReady(async () => {
           console.log(`magic-circle: unknown bridge type ${bridge.type} (${bridge.name})`);
           continue;
       }
-
       await dispatcher.install(bridge.name, driver, bridge.perms);
+    } catch(e) {
+      console.log(e);
     }
-  } catch(e) {
-    console.log(e);
   }
+
 })

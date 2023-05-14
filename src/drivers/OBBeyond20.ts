@@ -22,7 +22,7 @@ export class OBBeyond20 implements IBridge {
             setTimeout(tryRegister, 2500);
         }
         tryRegister();
-        
+
         return Promise.resolve();
     }
     
@@ -30,29 +30,52 @@ export class OBBeyond20 implements IBridge {
     send = () => void 0;
     
     parseEvent(evt: any, callback: (packet: any) => void){
-        if(evt.action != "rendered_roll") return;
+        if(evt.action != "rendered-roll") return;
         
         if(evt.attack_rolls.length > 0)
-            callback(this.parseRolls(evt, evt.attack_rolls[0]));
+            callback(this.parseRolls(evt, evt.attack_rolls));
         
         if(evt.damage_rolls.length > 0)
-            callback(this.parseRolls(evt, evt.damage_rolls[1]));
+            callback(this.parseRolls(evt, evt.damage_rolls));
     }
     
-    parseRolls(evt: any, set: any): MsgRPC {
-        const results = set.rolls.map(({roll} : {roll: number}) => roll.toString());
+    parseRolls(evt: any, rolls: any): MsgRPC {
+        const sets = rolls.map((set: any) => set instanceof Array ? set[1] : set);
+
+        let total = 0;
+        let dice = new Array<number>();
+        let results = new Array<number>();
+        for(let i = 0; i < sets.length; i++) {
+            if(i == 0) total = sets[i].total;
+            else {
+                switch(evt.request.advantage) {
+                    case 0: // no advantage
+                        total += sets[i].total;
+                        break;
+                    case 3: // advantage
+                        total = Math.max(total, sets[i].total);
+                        break;
+                    case 4: // disadvantage
+                        total = Math.min(total, sets[i].total);
+                        break;
+                }
+            }
+
+            dice = [...dice, ...new Array<number>(sets[i].parts[0].amount).fill(sets[i].parts[0].faces)];
+            results = [...results, ...sets[i].parts[0].rolls.map(({roll}:{roll:number}) => roll)]
+        }
         
         return {
             cmd: "msg",
             type: "dice",
-            text: `${evt.title} ${set.type} (${set.formula}) [${results.join(', ')}]`,
+            text: `${evt.title} ${sets[0].type} (${sets[0].formula}) [${results.join(', ')}]`,
             time: Date.now(),
             author: evt.character,
             metadata: {
-                dice: new Array(set.amount).fill(set.faces.toString()),
+                dice: dice,
                 results: results,
-                total: set.total,
-                kind: set.type
+                total: total,
+                kind: sets[0].type
             }
         }
     }
