@@ -35,10 +35,6 @@ OBR.onReady(async () => {
   
   const bridges = config.bridges || [];
   bridges.push({name: "bc", type: "broadcast", perms: "rwc"});
-  
-  // TODO: for the time being let's hardcode the knock bridge until the configurator is done
-  bridges.push({name: "knock", type: "websocket", perms: "rwc", url: "ws://localhost:12210"});
-  bridges.push({name: "obb20", type: "obbeyond20", perms: "w"});
 
   console.log(bridges);
 
