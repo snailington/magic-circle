@@ -5,10 +5,14 @@ import {BroadcastBridge} from "./drivers/BroadcastBridge.ts";
 import {IBridge} from "./drivers/IBridge.ts";
 import {WSBridge} from "./drivers/WSBridge.ts";
 import {OBBeyond20} from "./drivers/OBBeyond20.ts";
+import {BridgeStatusServer} from "./BridgeStatus.ts";
 
 const dispatcher = new Dispatcher();
+const statusServer = new BridgeStatusServer();
 
 OBR.onReady(async () => {
+  statusServer.start(dispatcher);
+
   /*
   // check if we're allowed to run the dispatcher
   const role = await OBR.player.getRole();
