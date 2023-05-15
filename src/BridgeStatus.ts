@@ -1,6 +1,6 @@
 import {Dispatcher} from "./Dispatcher.ts";
-import {RPC} from "magic-circle-api";
-import {getBridges} from "./BridgeConfig.ts";
+import {ConfigRPC, RPC} from "magic-circle-api";
+import {BridgeConfig, getConfig} from "./BridgeConfig.ts";
 import OBR from "@owlbear-rodeo/sdk";
 
 const STATUS_CHANNEL = "magic-circle-status";
@@ -8,8 +8,9 @@ const STATUS_CHANNEL = "magic-circle-status";
 interface BridgeStatusRPC {
     connection: string,
     
-    type: "activity" | "error";
-    bridge: string;
+    type: "reload" | "activity" | "error";
+
+    bridge?: string;
     time: number;
     cmd?: string;
 }
@@ -25,12 +26,21 @@ export class BridgeStatusServer {
     }
 
     start(dispatcher: Dispatcher) {
+        OBR.player.getConnectionId().then((id) => this.connectionId = id);
+
         this.dispatcher = dispatcher;
         dispatcher.onmessage = this.dispatchTap.bind(this);
-        OBR.player.getConnectionId().then((id) => this.connectionId = id);
     }
 
     private dispatchTap(sender: string, rpc: RPC) {
+        if(rpc.cmd == "config" && (rpc as ConfigRPC).subcmd == "reload") {
+            this.channel.postMessage(JSON.stringify({
+                connection: this.connectionId,
+                type: "reload"
+            }));
+            return;
+        }
+
         this.channel.postMessage(JSON.stringify({
             connection: this.connectionId,
             type: "activity",
@@ -53,27 +63,34 @@ export class BridgeStatusClient {
     status: Map<string, BridgeStatus> = new Map<string, BridgeStatus>();
     connectionId?: string;
     
+    reloadCallback?: () => void;
+
     constructor() {
         BridgeStatusClient.instance = this;
 
         this.channel = new BroadcastChannel(STATUS_CHANNEL);
-        this.channel.onmessage = this.messageHandler.bind(this);
-
-        getBridges(OBR.room.id)?.map((b) => this.status.set(b.name, new BridgeStatus()));
     }
 
     start() {
+        this.channel.onmessage = this.messageHandler.bind(this);
+
+        getConfig(OBR.room.id)?.bridges.map((b: BridgeConfig) => this.status.set(b.name, new BridgeStatus()));
         OBR.player.getConnectionId().then((id) => this.connectionId = id);
     }
 
     private messageHandler(evt: MessageEvent<string>) {
         const rpc: BridgeStatusRPC = JSON.parse(evt.data);
-        console.log("status", rpc);
-        
         if(rpc.connection != this.connectionId) return;
+
+        if(rpc.type == "reload") {
+            if(this.reloadCallback) this.reloadCallback();
+            return;
+        }
+
+        if(!rpc.bridge) return;
         const bridge = this.status.get(rpc.bridge);
         if(!bridge) return;
-        
+
         bridge.lastActivity = rpc;
         if(bridge.callback) bridge.callback(rpc);
     }
@@ -85,5 +102,11 @@ export class BridgeStatusClient {
         bridge.callback = callback;
         
         return () => bridge.callback = undefined;
+    }
+
+    static onReload(callback: () => void) {
+        BridgeStatusClient.instance.reloadCallback = callback;
+
+        return () => BridgeStatusClient.instance.reloadCallback = undefined;
     }
 }
