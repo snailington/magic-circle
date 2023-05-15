@@ -1,0 +1,4 @@
+#bridge-list {
+    height: 80vh;
+    overflow-y: scroll;
+}

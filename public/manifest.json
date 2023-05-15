@@ -1,8 +1,16 @@
 {
-    "name": "Magic Circle",
+    "name": "Magic Circle (ui branch)",
     "description": "RPC gateway and synchronization service",
     "homepage_url": "https://github.com/snailington/magic-circle",
     "version": "1.0.0",
     "manifest_version": 1,
-    "background_url": "/"
+    "background_url": "/background.html",
+
+    "action": {
+        "title": "Magic Circle",
+        "icon": "/icon.svg",
+        "popover": "/",
+        "height": 90,
+        "width": 600
+    }
 }

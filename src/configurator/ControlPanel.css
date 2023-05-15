@@ -1,0 +1,7 @@
+#control-panel {
+    display: flex;
+}
+
+.btn-new-source {
+    flex: 2;
+}
