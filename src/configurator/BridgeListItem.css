@@ -15,10 +15,18 @@
 .bridge-status {
     flex: 8;
     
-    background: green;
     margin: 1px 4px 1px 0;
     
+    border: 1px solid black;
     border-radius: 50%;
+}
+
+.status-active {
+    background: green;
+}
+
+.status-inactive {
+    background: transparent;
 }
 
 .btn-bridge-open {
