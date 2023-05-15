@@ -1,6 +1,6 @@
 import BridgeListItem from "./BridgeListItem.tsx";
 import "./BridgeList.css"
-import {getBridges} from "../BridgeConfig.ts";
+import {getBridges} from "../../BridgeConfig.ts";
 import OBR from "@owlbear-rodeo/sdk";
 
 export default function BridgeList() {
