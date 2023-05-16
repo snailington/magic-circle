@@ -1,12 +1,13 @@
 import ReactDOM from 'react-dom/client'
 import BridgeBuilderApp from './BridgeBuilderApp.tsx'
-//import '../configurator/index.css'
 import WaitForOwlbear from "../configurator/WaitForOwlbear.tsx";
 
-import "./index.css"
 import BridgeEditorApp from "./BridgeEditorApp.tsx";
 import {BridgeConfig, getConfig} from "../../BridgeConfig.ts";
 import OBR from "@owlbear-rodeo/sdk";
+
+import "../common.css"
+import "./index.css"
 
 const params = new URLSearchParams(window.location.search);
 const editParam = params.get("edit");

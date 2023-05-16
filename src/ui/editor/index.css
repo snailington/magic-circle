@@ -1,25 +1,12 @@
-#root {
-    font-family: Roboto, Helvetica, Arial, sans-serif;
-    padding: 25px;
-    color: rgba(255, 255, 255, 0.85);
+body {
 }
 
-button {
-    color: rgba(255, 255, 255, 0.85);
-    background: transparent;
-    border: 1px solid #bb99ff;
+#root {
+    padding: 25px;
 }
 
 button:hover {
-    background: #2d3143;
-}
-
-button:disabled {
-    color: rgba(255, 255, 255, 0.40);
-}
-
-button:disabled:hover {
-    background: transparent;
+    background: #1e2231;
 }
 
 .bottom-btns {

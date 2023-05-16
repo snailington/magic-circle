@@ -1,0 +1,38 @@
+#root {
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    color: rgba(255, 255, 255, 0.85);
+    
+    scrollbar-width: thin;
+    scrollbar-color: #bb99ff #222639;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #bb99ff;
+    border-radius: 8px;
+}
+
+body {
+    color: rgba(255, 255, 255, 0.87);
+}
+
+button {
+    color: rgba(255, 255, 255, 0.85);
+    background: transparent;
+    border: 1px solid #bb99ff;
+}
+
+button:hover {
+    background: #2d3143;
+}
+
+button:disabled {
+    color: rgba(255, 255, 255, 0.40);
+}
+
+button:disabled:hover {
+    background: transparent;
+}
