@@ -14,7 +14,7 @@ export const bridgeDirectory: Array<BridgeDefinition> = [
         hidden: true,
         
         args: [
-            { name: "channel", description: "Channel name to listen on" }
+            { id: "channel", name: "Channel", description: "Channel name to listen on." }
         ]
     },{
         id: "websocket",
@@ -23,12 +23,12 @@ export const bridgeDirectory: Array<BridgeDefinition> = [
         type: WSBridge,
         
         args: [
-            { name: "url", description: "Websocket URL of remote endpoint" }
+            { id: "url", name: "URL", description: "Websocket URL of remote endpoint." }
         ]
     },{
         id: "obbeyond20",
         name: "Owlbear-Beyond20",
-    description: "Integration with the Owlbear-supporting fork of Beyond20 (https://github.com/gludington/Beyond20)",
+    description: "Integration with the Owlbear-supporting fork of Beyond20. (https://github.com/gludington/Beyond20)",
         type: OBBeyond20,
     
         args: []
@@ -36,14 +36,15 @@ export const bridgeDirectory: Array<BridgeDefinition> = [
 ];
 
 
-interface BridgeDefinition {
+export interface BridgeDefinition {
     id: string;
     name: string;
     description: string;
     type: {new(config: BridgeConfig): IBridge};
     hidden?: boolean;
-    args: [{
+    args: {
+        id: string,
         name: string,
         description: string
-    }?];
+    }[];
 }

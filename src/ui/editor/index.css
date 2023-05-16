@@ -10,6 +10,18 @@ button {
     border: 1px solid #bb99ff;
 }
 
+button:hover {
+    background: #2d3143;
+}
+
+button:disabled {
+    color: rgba(255, 255, 255, 0.40);
+}
+
+button:disabled:hover {
+    background: transparent;
+}
+
 .bottom-btns {
     position: absolute;
     bottom: 0;
@@ -28,4 +40,8 @@ button {
     height: 28px;
     
     border-radius: 8px;
+}
+
+input {
+    padding: 0;
 }

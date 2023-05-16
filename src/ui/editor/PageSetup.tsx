@@ -10,7 +10,7 @@ export default function PageSetup({setPage}: {setPage: (page: string)=>void}) {
                 source, you can click here to easily import it:
             </p>
             <div className="big-btn-area">
-                <button onClick={()=>setPage("import")}>Import a Source</button>
+                <button onClick={()=>setPage("import")}>Import Source</button>
                 <h2>or</h2>
                 <button onClick={()=>setPage("manual")}>Manual Setup</button>
             </div>
