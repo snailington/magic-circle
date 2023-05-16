@@ -1,12 +1,14 @@
 import {IBridge} from "./IBridge.ts";
 import {RPC} from "magic-circle-api";
+import {BridgeConfig} from "../BridgeConfig.ts";
 
 export class WSBridge implements IBridge {
     url: string;
     socket: WebSocket | null = null;
     
-    constructor(url: string) {
-        this.url = url;
+    constructor(config: BridgeConfig) {
+        if(typeof config.url !== "string") throw new Error("Invalid url argument");
+        this.url = config.url;
     }
     
     open(callback: (packet: any) => void): Promise<void> {

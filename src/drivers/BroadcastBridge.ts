@@ -1,13 +1,16 @@
 import {IBridge} from "./IBridge.ts";
 import {RPC} from "magic-circle-api";
 import OBR from "@owlbear-rodeo/sdk";
+import {BridgeConfig} from "../BridgeConfig.ts";
 
 // Communication over a browser BroadcastChannel
 export class BroadcastBridge implements IBridge {
     private channel: BroadcastChannel;
     
-    constructor(channelName: string) {
-        this.channel = new BroadcastChannel(channelName);
+    constructor(config: BridgeConfig) {
+        console.log(config);
+        if(typeof config.channel !== "string") throw new Error("Invalid channel argument");
+        this.channel = new BroadcastChannel(config.channel);
     }
     
     open(callback: (packet: any)=>void): Promise<void> {

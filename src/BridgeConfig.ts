@@ -3,7 +3,7 @@ export interface BridgeConfig {
     type: string;
     perms: string;
 
-    _sytem?: boolean;
+    _system?: boolean;
     
     [other: string]: string | boolean | undefined
 }
