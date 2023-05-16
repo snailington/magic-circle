@@ -17,7 +17,7 @@ export default function BridgeListItem({bridge}: {bridge: BridgeConfig }) {
         OBR.modal.open({
             id: "moe.snail.magic-circle/deletebridge",
             url: `/deletebridge.html?name=${bridge.name}`,
-            height: 300,
+            height: 225,
             width: 300
         });
     }

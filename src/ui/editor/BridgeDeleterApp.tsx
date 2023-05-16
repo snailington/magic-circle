@@ -2,7 +2,6 @@ import OBR from "@owlbear-rodeo/sdk";
 import {deleteBridge} from "../../BridgeConfig.ts";
 
 export default function BridgeDeleterApp() {
-    
     const params = new URLSearchParams(window.location.search);
     const bridgeName = params.get("name") || "";
     
@@ -18,10 +17,10 @@ export default function BridgeDeleterApp() {
     return (
         <div>
             <h1>Delete Source</h1>
-            Are you sure you want to delete {bridgeName}?
-            <div className="btn-yes-no">
-                <button onClick={deleteNo}>no</button>
-                <button onClick={deleteYes}>yes</button>
+            Are you sure you want to delete "{bridgeName}"?
+            <div className="bottom-btns">
+                <button onClick={deleteNo}>No</button>
+                <button onClick={deleteYes}>Yes</button>
             </div>
         </div>
     )
