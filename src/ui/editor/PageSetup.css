@@ -1,0 +1,28 @@
+.big-btn-area {
+    padding: 20px 0 20px 0;
+    text-align: center;
+}
+
+.big-btn-area h2 {
+    margin: 8px 0 8px 0;
+}
+
+.big-btn-area button {
+    min-width: 200px;
+    min-height: 40px;
+
+    font-size: 16pt;
+
+    border-radius: 20px;
+}
+
+textarea {
+    width: 100%;
+    height: 12ex;
+    
+    resize: none;
+    border-radius: 8px;
+    
+    color: rgba(255, 255, 255, 0.85);
+    background: #2d3143;
+}

@@ -48,9 +48,11 @@ export default function PageImport({setPage}: {setPage: (page: string)=>void}) {
             <h1>Import Source</h1>
             <p>Paste your source configuration below:</p>
             <textarea onChange={(e) => setConfigString(e.target.value)} value={configString}></textarea>
-            <button onClick={() => setPage("main")}>Back</button>
-            <button disabled={!importable} onClick={clickImport}>Import</button>
             {status}
+            <div className="bottom-btns">
+                <button onClick={() => setPage("main")}>Back</button>
+                <button disabled={!importable} onClick={clickImport}>Import</button>
+            </div>
         </>
     );
 }

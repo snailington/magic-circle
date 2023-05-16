@@ -1,0 +1,16 @@
+.config-status {
+    
+}
+
+.config-label {
+    float: left;
+    clear: both;
+    
+    font-weight: bold;
+    width: 15ex;
+}
+
+.config-value {
+    float: left;
+    clear: right;
+}

@@ -7,7 +7,7 @@ export default function ControlPanel() {
         OBR.modal.open({
             id: "moe.snail.magic-circle/newbridge",
             url: "/newbridge.html",
-            height: 600,
+            height: 400,
             width: 400
         })
     }
