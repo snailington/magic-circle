@@ -6,12 +6,13 @@ import OBR from "@owlbear-rodeo/sdk";
 export class BroadcastBridge implements IBridge {
     private channel: BroadcastChannel;
     
-    constructor() {
-        this.channel = new BroadcastChannel("magic-circle");
+    constructor(channelName: string) {
+        this.channel = new BroadcastChannel(channelName);
     }
     
     open(callback: (packet: any)=>void): Promise<void> {
         this.channel.onmessage = (evt: MessageEvent<any>) => {
+            console.log("bc", evt.data);
             const packet = JSON.parse(evt.data);
             if(packet.cmd == "open" || packet.cmd == "reply" ||
                 (packet.room && packet.room != OBR.room.id)) return;
