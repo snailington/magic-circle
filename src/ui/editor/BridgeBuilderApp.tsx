@@ -7,10 +7,11 @@ import PageManual from "./PageManual.tsx";
 export default function BridgeBuilderApp() {
     const [page, setPage] = useState("main");
     
-    let currentPage: ReactNode = <PageSetup setPage={setPage} />;
+    let currentPage: ReactNode;
     switch(page) {
         case "import": currentPage = <PageImport setPage={setPage} />; break;
         case "manual": currentPage = <PageManual setPage={setPage} />; break;
+        default:       currentPage = <PageSetup setPage={setPage} />; break;
     }
     
     return (
