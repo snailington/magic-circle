@@ -56,10 +56,13 @@ export class Dispatcher {
     reloadConfig() {
         const config = getConfig(OBR.room.id);
 
+        // the bridges in the config file to be loaded
         const configBridges: BridgeConfig[] = config.bridges;
+        // the bridges that are currently running
         const currentBridges = Array.from(this.bridges.values()).map((b) => b.config);
 
         // find the unions and differences between existing and next state
+
         const opening = new Array<BridgeConfig>();
         const existing = configBridges.reduce((acc, bridge) => {
             if(!currentBridges.find((b) => b.name == bridge.name)) opening.push(bridge);
@@ -71,12 +74,31 @@ export class Dispatcher {
             return acc;
         }, new Array<BridgeConfig>());
 
+        // uninsall bridges that aren't in the new config
         for(const bridge of closing) {
             if(bridge._system) continue;
             this.uninstall(bridge.name);
         }
 
+        // install bridges that aren't in the old one
         for(const bridge of opening) {
+            this.install(bridge).then();
+        }
+
+        // check if we need to reinstall ones that are in both
+        for(const bridge of existing) {
+            const current: BridgeInfo = this.bridges.get(bridge.name) as BridgeInfo;
+
+            let changed = false;
+            for(const property in bridge) {
+                if(bridge[property] == current.config[property]) continue;
+                changed = true;
+                break;
+            }
+
+            if(!changed) continue;
+
+            this.uninstall(bridge.name);
             this.install(bridge).then();
         }
     }
