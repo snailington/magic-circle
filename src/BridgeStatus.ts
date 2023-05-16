@@ -97,11 +97,14 @@ export class BridgeStatusClient {
     
     // Register a callback that will get called when a bridge's status is updated
     static onUpdate(name: string, callback: (status: BridgeStatusRPC) => void) {
-        const bridge = BridgeStatusClient.instance.status.get(name);
-        if(!bridge) throw new Error(`unregistered bridge {name}`);
+        let bridge = BridgeStatusClient.instance.status.get(name);
+        if(!bridge) {
+            bridge = new BridgeStatus();
+            BridgeStatusClient.instance.status.set(name, bridge);
+        }
         bridge.callback = callback;
         
-        return () => bridge.callback = undefined;
+        return () => {if(bridge) bridge.callback = undefined};
     }
 
     static onReload(callback: () => void) {

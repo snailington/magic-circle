@@ -1,0 +1,18 @@
+.property {
+    display: flex;
+    max-height: 80%;
+    overflow-y: scroll;
+}
+
+.property *:first-child {
+    flex: 2;
+}
+
+.property *:last-child {
+    flex: 3;
+}
+
+.property-description {
+    margin: 4px 0 16px 0;
+    padding: 0 8px 0 16px;
+}

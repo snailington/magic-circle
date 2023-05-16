@@ -93,7 +93,6 @@ export class Dispatcher {
         const info = new BridgeInfo(config, driver, config.perms);
         
         await driver.open((packet: any) => {
-            console.log("received:", config.name, packet);
             const validated = this.validate(info, packet);
             if(!validated) return;
             this.dispatch(config.name, validated);
@@ -125,7 +124,6 @@ export class Dispatcher {
      * @return a validated RPC or null if it could not be validated 
     */
     validate(info: BridgeInfo, packet: any): RPC | null {
-        console.log("validate", packet, info);
         switch(packet.cmd) {
             case "config":
                 if(!info.controlAccess) return null;

@@ -2,11 +2,12 @@ import {bridgeDirectory} from "../../BridgeDirectory.ts";
 import {ChangeEvent, ReactElement, useState} from "react";
 import "./PageManual.css"
 import BridgeArgumentList from "./BridgeArgumentList.tsx";
-import {BridgeConfig} from "../../BridgeConfig.ts";
+import {addBridge, BridgeConfig, getConfig} from "../../BridgeConfig.ts";
+import OBR from "@owlbear-rodeo/sdk";
 
 export default function PageManual({setPage}: {setPage: (page: string)=>void}) {
-    const [config, setConfig] = useState({name: "source", type: "websocket", perms: "rwm"} as BridgeConfig);
-    const [selected, setSelected] = useState(config.type);
+    const [bridge, setBridge] = useState({name: "source", type: "websocket", perms: "rwm"} as BridgeConfig);
+    const [selected, setSelected] = useState(bridge.type);
 
     const bridgeDef = bridgeDirectory.find((def) => def.id == selected);
 
@@ -16,13 +17,29 @@ export default function PageManual({setPage}: {setPage: (page: string)=>void}) {
     }, new Array<ReactElement>());
 
     function updateName(evt: ChangeEvent<HTMLInputElement>) {
-        setConfig({...config, name: evt.target.value});
+        setBridge({...bridge, name: evt.target.value});
     }
 
     function updateArg(key: string, value: string) {
-        const newConfig = {...config};
+        const newConfig = {...bridge};
         newConfig[key] = value;
-        setConfig(newConfig);
+        setBridge(newConfig);
+    }
+
+    function clickImport() {
+        const config = getConfig(OBR.room.id);
+
+        const suffix = /(\d.*)$/;
+        while(config.bridges.find((b: BridgeConfig) => b.name == bridge.name)) {
+            if(bridge.name.match(suffix)) {
+                bridge.name = bridge.name.replace(suffix, (s) => (parseInt(s)+1).toString());
+            } else {
+                bridge.name += "1";
+            }
+        }
+
+        addBridge(OBR.room.id, bridge);
+        OBR.modal.close("moe.snail.magic-circle/newbridge");
     }
 
     return (
@@ -32,7 +49,7 @@ export default function PageManual({setPage}: {setPage: (page: string)=>void}) {
             <div id="properties">
                 <div className="property">
                     <label htmlFor="input-name">Source Name:</label>
-                    <input id="input-name" type="text" value={config.name} onChange={updateName}></input>
+                    <input id="input-name" type="text" value={bridge.name} onChange={updateName}></input>
                 </div>
 
                 <div className="property">
@@ -44,7 +61,7 @@ export default function PageManual({setPage}: {setPage: (page: string)=>void}) {
 
                 <p className="property-description">{bridgeDef?.description}</p>
 
-                <BridgeArgumentList bridgeDef={bridgeDef} config={config} updateArg={updateArg}/>
+                <BridgeArgumentList bridgeDef={bridgeDef} config={bridge} updateArg={updateArg}/>
 
                 <div className="property">
                     <label htmlFor="select-permission">Permissions:</label>
@@ -60,7 +77,7 @@ export default function PageManual({setPage}: {setPage: (page: string)=>void}) {
 
             <div className="bottom-btns">
                 <button onClick={() => setPage("main")}>Back</button>
-                <button onClick={() => console.log(config)}>Import</button>
+                <button onClick={clickImport}>Import</button>
             </div>
         </>
         );
