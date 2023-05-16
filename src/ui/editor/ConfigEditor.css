@@ -1,7 +1,10 @@
-.property {
-    display: flex;
+.properties {
     max-height: 80%;
     overflow-y: scroll;
+}
+
+.property {
+    display: flex;
 }
 
 .property *:first-child {
