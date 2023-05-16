@@ -49,7 +49,7 @@ export class Dispatcher {
             type: "broadcast",
             perms: "rwcm",
             channel: "magic-circle",
-            _sytem: true
+            _system: true
         }, true).then();
     }
 
@@ -72,7 +72,7 @@ export class Dispatcher {
         }, new Array<BridgeConfig>());
 
         for(const bridge of closing) {
-            if(bridge._sytem) continue;
+            if(bridge._system) continue;
             this.uninstall(bridge.name);
         }
 
