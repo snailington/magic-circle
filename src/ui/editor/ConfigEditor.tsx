@@ -1,4 +1,4 @@
-import {addBridge, BridgeConfig, getConfig} from "../../BridgeConfig.ts";
+import {addBridge, BridgeConfig, deleteBridge, getConfig} from "../../BridgeConfig.ts";
 import OBR from "@owlbear-rodeo/sdk";
 import {ChangeEvent, ReactElement, useState} from "react";
 import {bridgeDirectory} from "../../BridgeDirectory.ts";
@@ -7,17 +7,23 @@ import "./ConfigEditor.css"
 
 export default function ConfigEditor({editConfig, onBack}: {editConfig?: BridgeConfig, onBack: ()=>void}) {
     const [bridge, setBridge] = useState(editConfig || {name: "source", type: "websocket", perms: "rwm"} as BridgeConfig);
-    const [selected, setSelected] = useState(bridge.type);
-
-    const bridgeDef = bridgeDirectory.find((def) => def.id == selected);
+    const bridgeDef = bridgeDirectory.find((def) => def.id == bridge.type);
 
     const typeOptions = bridgeDirectory.reduce((acc, def) => {
-        if(!def.hidden) acc.push(<option key={def.id} value={def.id}>{def.name}</option>);
-        return acc;
+            if(!def.hidden) acc.push(<option key={def.id} value={def.id}>{def.name}</option>);
+            return acc;
         }, new Array<ReactElement>());
 
     function updateName(evt: ChangeEvent<HTMLInputElement>) {
         setBridge({...bridge, name: evt.target.value});
+    }
+
+    function updateType(evt: ChangeEvent<HTMLSelectElement>) {
+        setBridge({...bridge, type: evt.target.value});
+    }
+
+    function updatePerms(evt: ChangeEvent<HTMLSelectElement>) {
+        setBridge({...bridge, perms: evt.target.value});
     }
 
     function updateArg(key: string, value: string) {
@@ -27,6 +33,8 @@ export default function ConfigEditor({editConfig, onBack}: {editConfig?: BridgeC
     }
 
     function clickImport() {
+        if(editConfig) deleteBridge(OBR.room.id, bridge.name);
+
         const config = getConfig(OBR.room.id);
 
         const suffix = /(\d.*)$/;
@@ -53,7 +61,7 @@ export default function ConfigEditor({editConfig, onBack}: {editConfig?: BridgeC
     
                 <div className="property">
                     <label htmlFor="select-type">Source Type:</label>
-                    <select id="select-type" value={selected} onChange={(e) => setSelected(e.target.value)}>
+                    <select id="select-type" value={bridge.type} onChange={updateType}>
                         {typeOptions}
                     </select>
                 </div>
@@ -64,7 +72,7 @@ export default function ConfigEditor({editConfig, onBack}: {editConfig?: BridgeC
     
                 <div className="property">
                     <label htmlFor="select-permission">Permissions:</label>
-                    <select id="select-permission">
+                    <select id="select-permission" onChange={updatePerms} value={bridge.perms}>
                         <option value="m">Messages Only</option>
                         <option value="wm">Write and Message</option>
                         <option value="rm">Read and Message</option>

@@ -22,6 +22,15 @@ export default function BridgeListItem({bridge}: {bridge: BridgeConfig }) {
         });
     }
 
+    function beginEdit() {
+        OBR.modal.open({
+            id: "moe.snail.magic-circle/newbridge",
+            url: `/newbridge.html?edit=${bridge.name}`,
+            height: 400,
+            width: 400
+        })
+    }
+
     const statusClass = activity ? "status-active" : "status-inactive";
 
     return (
@@ -29,8 +38,7 @@ export default function BridgeListItem({bridge}: {bridge: BridgeConfig }) {
             <div className="bridge-name">{bridge.name}</div>
             <div className="bridge-type">{bridge.type}</div>
             <div className={`bridge-status ${statusClass}`} />
-            <button className="btn-bridge-open">open</button>
-            <button className="btn-bridge-edit">edit</button>
+            <button className="btn-bridge-edit" onClick={beginEdit}>edit</button>
             <button className="btn-bridge-delete" onClick={beginDelete}>X</button>
         </div>
     )
