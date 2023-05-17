@@ -1,3 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
-  <circle cx="12" cy="12" r="9" fill="none" fill-rule="evenodd" stroke="#000" stroke-width="2" />
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <circle style="fill: rgba(255, 255, 255, 0); stroke: rgb(0, 0, 0); stroke-width: 10px;" cx="245" cy="245" r="230"/>
+  <circle style="fill: rgba(255, 255, 255, 0); stroke: rgb(0, 0, 0); stroke-width: 10px;" cx="245" cy="245" r="86.25"/>
+  <polygon style="stroke: rgb(0, 0, 0); fill: rgba(216, 216, 216, 0); stroke-width: 10px; stroke-linecap: round; stroke-linejoin: round;" points="51.214 365.454 245.627 16.484 440.763 365.934"/>
+  <path style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 10px;" d="M 245.205 157.051 L 244.936 17.803"/>
+  <path style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 10px;" d="M 171.041 290.15 L 53.205 365.934"/>
+  <path style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 10px;" d="M 320.478 289.136 L 440.37 365.934"/>
+  <path style="stroke: rgb(0, 0, 0); fill: rgba(216, 216, 216, 0); stroke-width: 10px; stroke-linecap: round; stroke-linejoin: round;" d="M 244.325 15.624 L 51.558 124.275 L 51.501 363.528 L 248.337 473.296 L 439.519 364.348 L 437.735 124.275 L 244.325 15.624 Z"/>
+  <path style="stroke: rgb(0, 0, 0); fill: rgba(216, 216, 216, 0); stroke-dashoffset: 2px; stroke-width: 4px;" d="M 246.664 157.265 L 302.5 307.476 L 169.167 213.538 L 323.788 213.538 L 187.5 307.476 L 246.664 157.265 Z"/>
 </svg>

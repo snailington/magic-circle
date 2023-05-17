@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <bx:guide x="15" y="137.98" angle="0"/>
+    <bx:guide x="75.882" y="15" angle="90"/>
+    <bx:guide x="313.766" y="475" angle="90"/>
+    <bx:guide x="475" y="323.354" angle="0"/>
+    <radialGradient gradientUnits="userSpaceOnUse" cx="250.163" cy="239.308" r="230" id="gradient-1" gradientTransform="matrix(0.753656, -0.482874, 0.521868, 0.814516, -66.592464, 163.552752)">
+      <stop offset="0" style="stop-color: rgb(133, 128, 0);"/>
+      <stop offset="1" style=""/>
+    </radialGradient>
+    <radialGradient gradientUnits="userSpaceOnUse" cx="245" cy="245" r="86.25" id="gradient-2">
+      <stop offset="0" style="stop-color: rgba(255, 255, 255, 0)"/>
+      <stop offset="1" style="stop-color: rgba(204, 204, 204, 0)"/>
+    </radialGradient>
+    <radialGradient gradientUnits="userSpaceOnUse" cx="246.478" cy="232.371" r="77.31" id="gradient-0" gradientTransform="matrix(1.048612, -0.690262, 0.582662, 0.885151, -147.375798, 196.821912)">
+      <stop offset="0" style="stop-color: rgb(255, 247, 0);"/>
+      <stop offset="1" style="stop-color: rgba(0, 0, 0, 0.92);"/>
+    </radialGradient>
+  </defs>
+  <circle style="stroke-width: 10px; fill: url(#gradient-1); stroke: rgb(255, 247, 0);" cx="245" cy="245" r="230"/>
+  <circle style="stroke-width: 10px; fill: url(#gradient-2); stroke: rgb(255, 247, 0);" cx="245" cy="245" r="86.25"/>
+  <polygon style="fill: rgba(216, 216, 216, 0); stroke-width: 10px; stroke-linecap: round; stroke-linejoin: round; stroke: rgb(255, 247, 0);" points="51.214 365.454 245.627 16.484 440.763 365.934"/>
+  <path style="fill: rgb(216, 216, 216); stroke-width: 10px; stroke: rgb(255, 247, 0);" d="M 245.205 157.051 L 244.936 17.803"/>
+  <path style="fill: rgb(216, 216, 216); stroke-width: 10px; stroke: rgb(255, 247, 0);" d="M 171.041 290.15 L 53.205 365.934"/>
+  <path style="fill: rgb(216, 216, 216); stroke-width: 10px; stroke: rgb(255, 247, 0);" d="M 320.478 289.136 L 440.37 365.934"/>
+  <path style="stroke-width: 10px; stroke-linecap: round; stroke-linejoin: round; fill: rgba(225, 64, 64, 0); stroke: rgb(255, 247, 0);" d="M 244.325 15.624 L 51.558 124.275 L 51.501 363.528 L 248.337 473.296 L 439.519 364.348 L 437.735 124.275 L 244.325 15.624 Z"/>
+  <path style="stroke-dashoffset: 2px; stroke-width: 4px; fill: url(#gradient-0); stroke: rgb(255, 247, 0);" d="M 246.664 157.265 L 302.5 307.476 L 169.167 213.538 L 323.788 213.538 L 187.5 307.476 L 246.664 157.265 Z"/>
+</svg>
