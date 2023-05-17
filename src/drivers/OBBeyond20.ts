@@ -1,6 +1,5 @@
 import {IBridge, BridgeCallback} from "./IBridge.ts";
 import {MsgRPC, ErrorRPC} from "magic-circle-api";
-import OBR from "@owlbear-rodeo/sdk";
 
 // Bridges gludington's beyond20 fork into the Magic Circle bus
 export class OBBeyond20 implements IBridge {
