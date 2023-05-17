@@ -119,11 +119,11 @@ export class Dispatcher {
             await driver.open((packet) => this.dispatch(info, packet));
 
             if(!noAnnounce) {
-                driver.send(<OpenRPC>{
+                /*driver.send(<OpenRPC>{
                     cmd: "open",
                     version: 1,
                     room: OBR.room.id
-                });
+                });*/
             }
 
             this.bridges.set(config.name, info);
