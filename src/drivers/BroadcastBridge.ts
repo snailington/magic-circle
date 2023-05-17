@@ -1,4 +1,4 @@
-import {IBridge} from "./IBridge.ts";
+import {BridgeCallback, IBridge} from "./IBridge.ts";
 import {RPC} from "magic-circle-api";
 import OBR from "@owlbear-rodeo/sdk";
 import {BridgeConfig} from "../BridgeConfig.ts";
@@ -12,7 +12,7 @@ export class BroadcastBridge implements IBridge {
         this.channel = new BroadcastChannel(config.channel);
     }
     
-    open(callback: (packet: any)=>void): Promise<void> {
+    open(callback: BridgeCallback): Promise<void> {
         this.channel.onmessage = (evt: MessageEvent<any>) => {
             const packet = JSON.parse(evt.data);
             if(packet.cmd == "open" || packet.cmd == "reply" ||

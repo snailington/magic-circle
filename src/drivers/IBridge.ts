@@ -1,5 +1,6 @@
-import {RPC} from "magic-circle-api";
+import {RPC, MsgRPC} from "magic-circle-api";
 
+export type BridgeCallback = (packet: RPC | MsgRPC[]) => void;
 
 export interface IBridge {
     /*
@@ -7,7 +8,7 @@ export interface IBridge {
      * @param callback - the handler to which any incoming packets are passed
      * @return a promise that resolves when bridge is fully opened
     */
-    open(callback: (packet: any)=>void): Promise<void>;
+    open(callback: BridgeCallback): Promise<void>;
     
     /*
      * close the communication channel

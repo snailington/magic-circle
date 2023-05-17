@@ -116,7 +116,7 @@ export class Dispatcher {
             const driver = bridgeFactory(config);
             const info = new BridgeInfo(config, driver, config.perms);
 
-            await driver.open((packet: any) => this.dispatch(info, packet));
+            await driver.open((packet) => this.dispatch(info, packet));
 
             if(!noAnnounce) {
                 driver.send(<OpenRPC>{
@@ -170,8 +170,16 @@ export class Dispatcher {
      * @param source - key of originating bridge
      * @param packet - the RPC packet to process
     */
-    async dispatch(source: BridgeInfo, packet: RPC) {
+    async dispatch(source: BridgeInfo, packet: RPC | MsgRPC[]) {
         try {
+            if(packet instanceof Array) {
+                if(packet.find((p) => !this.validate(source, p))) return;
+                if(this.onmessage) this.onmessage(source.config.name as string, packet[0]);
+                console.log("batch", packet);
+                await MagicCircle.sendMessage(packet);
+                return;
+            }
+
             if(!this.validate(source, packet)) return;
             if(this.onmessage) this.onmessage(source.config.name as string, packet);
 
@@ -186,14 +194,14 @@ export class Dispatcher {
                     await this.dispatchSet(packet as SetRPC);
                     break;
                 case "msg":
-                    await MagicCircle.sendMessage(packet as MsgRPC);
+                    await MagicCircle.sendMessage(packet as (MsgRPC | MsgRPC[]));
                     break;
                 case "error":
                     this.handleError(source.config.name as string, packet);
                     break;
             }
         } catch(e) {
-            this.handleError(source.config.name as string, packet, e);
+            this.handleError(source.config.name as string, packet instanceof Array ? packet[0] : packet, e);
         }
     }
 

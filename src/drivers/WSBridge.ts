@@ -1,4 +1,4 @@
-import {IBridge} from "./IBridge.ts";
+import {IBridge, BridgeCallback} from "./IBridge.ts";
 import {RPC} from "magic-circle-api";
 import {BridgeConfig} from "../BridgeConfig.ts";
 
@@ -11,7 +11,7 @@ export class WSBridge implements IBridge {
         this.url = config.url;
     }
     
-    open(callback: (packet: any) => void): Promise<void> {
+    open(callback: BridgeCallback): Promise<void> {
         this.socket = new WebSocket(this.url);
         this.socket.onmessage = (e) => {
             callback(JSON.parse(e.data));

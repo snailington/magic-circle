@@ -1,11 +1,12 @@
-import {IBridge} from "./IBridge.ts";
-import {MsgRPC} from "magic-circle-api";
+import {IBridge, BridgeCallback} from "./IBridge.ts";
+import {MsgRPC, ErrorRPC} from "magic-circle-api";
+import OBR from "@owlbear-rodeo/sdk";
 
 // Bridges gludington's beyond20 fork into the Magic Circle bus
 export class OBBeyond20 implements IBridge {
     active = false;
 
-    open(callback: (packet: any) => void): Promise<void> {
+    open(callback: BridgeCallback): Promise<void> {
         window.addEventListener("message", (e) => {
             if(!e.origin.match(/owlbear.(app|rodeo)$/)) return;
             if(e.data?.DdbRegistration) this.active = true;
@@ -18,7 +19,7 @@ export class OBBeyond20 implements IBridge {
         const tryRegister = () => {
             if(this.active) return;
             if(tries-- < 0) {
-                callback({cmd: "error", msg: "Beyond20 not detected"});
+                callback(<ErrorRPC>{cmd: "error", msg: "Beyond20 not detected"});
                 return;
             }
             const regMsg = { action: "DdbRegister", id: "moe.snail.magic-circle" };
@@ -35,12 +36,18 @@ export class OBBeyond20 implements IBridge {
     
     parseEvent(evt: any, callback: (packet: any) => void){
         if(evt.action != "rendered-roll") return;
+
+        const batch: Array<MsgRPC> = [];
         
         if(evt.attack_rolls.length > 0)
-            callback(this.parseRolls(evt, evt.attack_rolls));
-        
+            batch.push(this.parseRolls(evt, evt.attack_rolls));
+
         if(evt.damage_rolls.length > 0)
-            callback(this.parseRolls(evt, evt.damage_rolls));
+            batch.push(this.parseRolls(evt, evt.damage_rolls));
+
+        callback(batch);
+
+        setTimeout(() => OBR.room.getMetadata().then((md) => {console.log(md["moe.snail.magic-circle/messages"])}))
     }
     
     parseRolls(evt: any, rolls: any): MsgRPC {
@@ -80,6 +87,6 @@ export class OBBeyond20 implements IBridge {
                 total: total,
                 kind: sets[0].type
             }
-        }
+        };
     }
 }
