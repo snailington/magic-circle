@@ -170,7 +170,6 @@ export class Dispatcher {
      * @param packet - the RPC packet to process
     */
     async dispatch(source: BridgeInfo, packet: RPC) {
-        console.log("dispatch", source, packet);
         try {
             if(!this.validate(source, packet)) return;
             if(this.onmessage) this.onmessage(source.config.name as string, packet);

@@ -8,14 +8,12 @@ export class BroadcastBridge implements IBridge {
     private channel: BroadcastChannel;
     
     constructor(config: BridgeConfig) {
-        console.log(config);
         if(typeof config.channel !== "string") throw new Error("Invalid channel argument");
         this.channel = new BroadcastChannel(config.channel);
     }
     
     open(callback: (packet: any)=>void): Promise<void> {
         this.channel.onmessage = (evt: MessageEvent<any>) => {
-            console.log("bc", evt.data);
             const packet = JSON.parse(evt.data);
             if(packet.cmd == "open" || packet.cmd == "reply" ||
                 (packet.room && packet.room != OBR.room.id)) return;

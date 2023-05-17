@@ -9,7 +9,6 @@ export default function BridgeListItem({bridge}: {bridge: BridgeConfig }) {
     const [error, setError] = useState(false);
 
     useEffect(() => BridgeStatusClient.onUpdate(bridge.name, (status) => {
-        console.log(status.type);
         switch(status.type) {
             case "activity":
                 setActivity(true);
