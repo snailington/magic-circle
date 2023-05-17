@@ -38,16 +38,11 @@ export class OBBeyond20 implements IBridge {
         if(evt.action != "rendered-roll") return;
 
         const batch: Array<MsgRPC> = [];
-        
         if(evt.attack_rolls.length > 0)
             batch.push(this.parseRolls(evt, evt.attack_rolls));
-
         if(evt.damage_rolls.length > 0)
             batch.push(this.parseRolls(evt, evt.damage_rolls));
-
         callback(batch);
-
-        setTimeout(() => OBR.room.getMetadata().then((md) => {console.log(md["moe.snail.magic-circle/messages"])}))
     }
     
     parseRolls(evt: any, rolls: any): MsgRPC {

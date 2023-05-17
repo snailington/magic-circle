@@ -175,7 +175,6 @@ export class Dispatcher {
             if(packet instanceof Array) {
                 if(packet.find((p) => !this.validate(source, p))) return;
                 if(this.onmessage) this.onmessage(source.config.name as string, packet[0]);
-                console.log("batch", packet);
                 await MagicCircle.sendMessage(packet);
                 return;
             }
