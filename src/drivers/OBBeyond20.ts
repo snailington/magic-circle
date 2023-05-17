@@ -45,11 +45,14 @@ export class OBBeyond20 implements IBridge {
     }
     
     parseRolls(evt: any, rolls: any): MsgRPC {
+        // the roll data appears to be in a different location in attack vs damage rolls, detect it
         const sets = rolls.map((set: any) => set instanceof Array ? set[1] : set);
 
         let total = 0;
         let dice = new Array<number>();
         let results = new Array<number>();
+
+        // collate the results of all the dice sets in this roll
         for(let i = 0; i < sets.length; i++) {
             if(i == 0) total = sets[i].total;
             else {
@@ -63,6 +66,7 @@ export class OBBeyond20 implements IBridge {
                     case 4: // disadvantage
                         total = Math.min(total, sets[i].total);
                         break;
+                    // todo: what are other values of request.advantage?
                 }
             }
 
@@ -70,17 +74,46 @@ export class OBBeyond20 implements IBridge {
             results = [...results, ...sets[i].parts[0].rolls.map(({roll}:{roll:number}) => roll)]
         }
         
+        const title = evt.title.match(/^[^(]*/)
+        const type = this.interpretRollType(sets[0].type);
+
+        let text = title[0];
+        switch(type) {
+            case "initiative":
+                break;
+            default:
+                text += "  " + type;
+        }
+
+        const modifier = sets[0].parts.length > 1 ? parseInt(sets[0].parts[1] + sets[0].parts[2]) || 0: 0;
+        console.log(sets[0].formula, modifier);
+
         return {
             cmd: "msg",
             type: "dice",
-            text: `${evt.title} ${sets[0].type} (${sets[0].formula}) [${results.join(', ')}]`,
+            text: text,
             author: evt.character,
             metadata: {
                 dice: dice,
                 results: results,
                 total: total,
-                kind: sets[0].type
+                modifier: modifier,
+                kind: type
             }
         };
+    }
+
+    // convert beyond20 roll types to the standard magic circle categories
+    interpretRollType(type: string): string {
+        switch(type) {
+            case "to-hit":
+                return "attack";
+            case "ability-check": case "skill-check":
+                return "check";
+            case "saving-throw":
+                return "save";
+            default:
+                return type;
+        }
     }
 }
