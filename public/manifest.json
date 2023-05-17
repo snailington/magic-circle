@@ -1,5 +1,5 @@
 {
-    "name": "Magic Circle (ui branch)",
+    "name": "Magic Circle",
     "description": "RPC gateway and synchronization service",
     "homepage_url": "https://github.com/snailington/magic-circle",
     "version": "1.0.0",
