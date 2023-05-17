@@ -10,7 +10,6 @@ export interface BridgeConfig {
 
 const defaultConfig = {
     bridges: [
-        { name: "ddb1", type: "websocket", perms: "wrm", url: "ws://localhost:12210" },
     ]
 };
 
