@@ -16,7 +16,11 @@ export class OBBeyond20 implements IBridge {
         
         let tries = 3;
         const tryRegister = () => {
-            if(this.active || tries-- < 0) return;
+            if(this.active) return;
+            if(tries-- < 0) {
+                callback({cmd: "error", msg: "Beyond20 not detected"});
+                return;
+            }
             const regMsg = { action: "DdbRegister", id: "moe.snail.magic-circle" };
             window.parent.postMessage(regMsg, "*");
             setTimeout(tryRegister, 2500);
