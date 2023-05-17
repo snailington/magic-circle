@@ -3,6 +3,7 @@ import MagicCircle, {ConfigRPC, MsgRPC, RPC, SetRPC} from "magic-circle-api";
 import OBR from "@owlbear-rodeo/sdk";
 import {BridgeConfig, getConfig} from "./BridgeConfig.ts";
 import {bridgeFactory} from "./BridgeFactory.ts";
+import {OpenRPC} from "magic-circle-api"
 
 class BridgeInfo {
     config: BridgeConfig;
@@ -118,7 +119,7 @@ export class Dispatcher {
             await driver.open((packet: any) => this.dispatch(info, packet));
 
             if(!noAnnounce) {
-                driver.send({
+                driver.send(<OpenRPC>{
                     cmd: "open",
                     version: 1,
                     room: OBR.room.id
@@ -175,6 +176,9 @@ export class Dispatcher {
             if(this.onmessage) this.onmessage(source.config.name as string, packet);
 
             switch(packet.cmd) {
+                case "ping":
+                    await source.bridge.send({cmd: "pong"});
+                    break;
                 case "config":
                     this.handleConfig(packet as ConfigRPC);
                     break;

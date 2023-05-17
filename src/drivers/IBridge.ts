@@ -1,4 +1,4 @@
-import {ErrorRPC, OpenRPC, ReplyRPC} from "magic-circle-api";
+import {RPC} from "magic-circle-api";
 
 
 export interface IBridge {
@@ -17,5 +17,5 @@ export interface IBridge {
     /*
      * if applicable, send a reply to the remote client over the bridge
     */
-    send(reply: OpenRPC | ReplyRPC | ErrorRPC): void;
+    send(reply: RPC): void;
 }

@@ -29,6 +29,7 @@ export class BroadcastBridge implements IBridge {
     }
     
     send(reply: RPC) {
+        (reply as any).room = OBR.room.id;
         this.channel.postMessage(JSON.stringify(reply));
     }
 }
