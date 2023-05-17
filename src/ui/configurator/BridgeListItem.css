@@ -31,6 +31,10 @@
     background: transparent;
 }
 
+.status-error {
+    background: red;
+}
+
 .btn-bridge-edit {
     flex: 15;
 }

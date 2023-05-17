@@ -6,11 +6,19 @@ import OBR from "@owlbear-rodeo/sdk";
 
 export default function BridgeListItem({bridge}: {bridge: BridgeConfig }) {
     const [activity, setActivity] = useState(false);
+    const [error, setError] = useState(false);
 
-    useEffect(() => BridgeStatusClient.onUpdate(bridge.name, () => {
-        setActivity(true);
-
-        setTimeout(() => setActivity(false), 1000);
+    useEffect(() => BridgeStatusClient.onUpdate(bridge.name, (status) => {
+        console.log(status.type);
+        switch(status.type) {
+            case "activity":
+                setActivity(true);
+                setTimeout(() => setActivity(false), 1000);
+                break;
+            case "error":
+                setError(true);
+                break;
+        }
     }), []);
 
     function beginDelete() {
@@ -31,7 +39,7 @@ export default function BridgeListItem({bridge}: {bridge: BridgeConfig }) {
         })
     }
 
-    const statusClass = activity ? "status-active" : "status-inactive";
+    const statusClass = error ? "status-error" : (activity ? "status-active" : "status-inactive");
 
     return (
         <div className="bridge">

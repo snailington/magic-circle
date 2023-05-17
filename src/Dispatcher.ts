@@ -40,7 +40,8 @@ class BridgeInfo {
 
 export class Dispatcher {
     bridges: Map<string, BridgeInfo>;
-    onmessage: ((source: string, packet: RPC) => void) | undefined = undefined;
+    onmessage?: ((source: string, packet: RPC) => void);
+    onerror?: ((source: string, packet: RPC | null, error: any) => void);
 
     constructor() {
         this.bridges = new Map<string, BridgeInfo>();
@@ -110,25 +111,25 @@ export class Dispatcher {
      */
     async install(config: BridgeConfig, noAnnounce = false) {
         console.log(`magic-circle: installing bridge ${config.type}(${config.name})`)
+        try {
+            const driver = bridgeFactory(config);
+            const info = new BridgeInfo(config, driver, config.perms);
 
-        const driver = bridgeFactory(config);
-        const info = new BridgeInfo(config, driver, config.perms);
-        
-        await driver.open((packet: any) => {
-            const validated = this.validate(info, packet);
-            if(!validated) return;
-            this.dispatch(config.name, validated);
-        });
+            await driver.open((packet: any) => this.dispatch(info, packet));
 
-        if(!noAnnounce) {
-            driver.send({
-                cmd: "open",
-                version: 1,
-                room: OBR.room.id
-            });
+            if(!noAnnounce) {
+                driver.send({
+                    cmd: "open",
+                    version: 1,
+                    room: OBR.room.id
+                });
+            }
+
+            this.bridges.set(config.name, info);
+        } catch(e: any) {
+            // delay reporting install errors because statusclient likely isn't ready to receive it yet
+            setTimeout(() => this.handleError(config.name, null, e), 100);
         }
-        
-        this.bridges.set(config.name, info);
     }
 
     /*
@@ -168,23 +169,37 @@ export class Dispatcher {
      * @param source - key of originating bridge
      * @param packet - the RPC packet to process
     */
-    async dispatch(source: string, packet: RPC) {
-        if(this.onmessage) this.onmessage(source, packet);
-        
-        switch(packet.cmd) {
-            case "config":
-                this.handleConfig(packet as ConfigRPC);
-                break;
-            case "set":
-                await this.dispatchSet(packet as SetRPC);
-                break;
-            case "msg":
-                await MagicCircle.sendMessage(packet as MsgRPC);
-                break;
+    async dispatch(source: BridgeInfo, packet: RPC) {
+        console.log("dispatch", source, packet);
+        try {
+            if(!this.validate(source, packet)) return;
+            if(this.onmessage) this.onmessage(source.config.name as string, packet);
+
+            switch(packet.cmd) {
+                case "config":
+                    this.handleConfig(packet as ConfigRPC);
+                    break;
+                case "set":
+                    await this.dispatchSet(packet as SetRPC);
+                    break;
+                case "msg":
+                    await MagicCircle.sendMessage(packet as MsgRPC);
+                    break;
+                case "error":
+                    this.handleError(source.config.name as string, packet);
+                    break;
+            }
+        } catch(e) {
+            this.handleError(source.config.name as string, packet, e);
         }
     }
-    
-    handleConfig(packet: ConfigRPC) {
+
+    private handleError(source: string, packet: RPC | null, error?: any) {
+        console.error(`magic-circle: error handling source "${source}"`, packet, error);
+        if(this.onerror) this.onerror(source, packet, error);
+    }
+
+    private handleConfig(packet: ConfigRPC) {
         switch(packet.subcmd) {
             case "reload":
                 this.reloadConfig();

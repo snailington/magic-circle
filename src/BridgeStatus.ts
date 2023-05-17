@@ -30,6 +30,7 @@ export class BridgeStatusServer {
 
         this.dispatcher = dispatcher;
         dispatcher.onmessage = this.dispatchTap.bind(this);
+        dispatcher.onerror = this.sendError.bind(this);
     }
 
     private dispatchTap(sender: string, rpc: RPC) {
@@ -46,6 +47,15 @@ export class BridgeStatusServer {
             type: "activity",
             bridge: sender,
             cmd: rpc.cmd
+        }));
+    }
+
+    private sendError(sender: string, rpc: RPC | null) {
+        this.channel.postMessage(JSON.stringify({
+            connection: this.connectionId,
+            type: "error",
+            bridge: sender,
+            cmd: rpc?.cmd
         }));
     }
 }
