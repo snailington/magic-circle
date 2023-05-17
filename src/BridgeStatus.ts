@@ -74,6 +74,7 @@ export class BridgeStatusClient {
     connectionId?: string;
     
     reloadCallback?: () => void;
+    allActivityCallback?: (bridge: string, cmd: string) => void;
 
     constructor() {
         BridgeStatusClient.instance = this;
@@ -103,6 +104,7 @@ export class BridgeStatusClient {
 
         bridge.lastActivity = rpc;
         if(bridge.callback) bridge.callback(rpc);
+        if(this.allActivityCallback) this.allActivityCallback(rpc.bridge, rpc.cmd || "");
     }
     
     // Register a callback that will get called when a bridge's status is updated
@@ -117,9 +119,15 @@ export class BridgeStatusClient {
         return () => {if(bridge) bridge.callback = undefined};
     }
 
+    // Register a callback that will be called when config is reloaded
     static onReload(callback: () => void) {
         BridgeStatusClient.instance.reloadCallback = callback;
-
         return () => BridgeStatusClient.instance.reloadCallback = undefined;
+    }
+
+    // Register a callback called on any activity, on any bridge
+    static onGlobal(callback: (bridge: string, cmd: string) => void) {
+        BridgeStatusClient.instance.allActivityCallback = callback;
+        return () => BridgeStatusClient.instance.allActivityCallback = undefined;
     }
 }
