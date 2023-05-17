@@ -1,7 +1,16 @@
 #control-panel {
     display: flex;
+    background: #2d3143;
 }
 
 .btn-new-source {
+    border-left: none;
+    border-bottom: none;
+    border-top-right-radius: 8px;
+
     flex: 2;
+}
+
+.btn-new-source:hover {
+    background: #1e2231;
 }
