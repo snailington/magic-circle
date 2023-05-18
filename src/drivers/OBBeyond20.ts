@@ -85,8 +85,17 @@ export class OBBeyond20 implements IBridge {
                 text += "  " + type;
         }
 
-        const modifier = sets[0].parts.length > 1 ? parseInt(sets[0].parts[1] + sets[0].parts[2]) || 0: 0;
-        console.log(sets[0].formula, modifier);
+        let suffix = "";
+        switch(evt.request.advantage) {
+            case 3: // advantage
+                suffix += "kh";
+                break;
+            case 4: // disadvantage
+                suffix += "kl";
+                break;
+        }
+
+        suffix += sets[0].parts.length > 1 ? sets[0].parts[1] + sets[0].parts[2]: "";
 
         return {
             cmd: "msg",
@@ -97,7 +106,7 @@ export class OBBeyond20 implements IBridge {
                 dice: dice,
                 results: results,
                 total: total,
-                modifier: modifier,
+                suffix: suffix,
                 kind: type
             }
         };
