@@ -3,7 +3,7 @@ import MagicCircle, {ConfigRPC, MsgRPC, RPC, SetRPC} from "magic-circle-api";
 import OBR from "@owlbear-rodeo/sdk";
 import {BridgeConfig, getConfig} from "./BridgeConfig.ts";
 import {bridgeFactory} from "./BridgeFactory.ts";
-import {OpenRPC} from "magic-circle-api"
+import {SetItemRPC} from "magic-circle-api"
 
 class BridgeInfo {
     config: BridgeConfig;
@@ -192,6 +192,9 @@ export class Dispatcher {
                 case "set":
                     await this.dispatchSet(packet as SetRPC);
                     break;
+                case "set-item":
+                    await this.dispatchSetItem(packet as SetItemRPC);
+                    break;
                 case "msg":
                     await MagicCircle.sendMessage(packet as (MsgRPC | MsgRPC[]));
                     break;
@@ -224,5 +227,57 @@ export class Dispatcher {
                 md[packet.key] = packet.value;
                 await OBR.room.setMetadata(md);
         }
+    }
+
+    private async dispatchSetItem(packet: SetItemRPC) {
+        function toBool(value: string) { return !(!packet || value == "false"); }
+
+        const filter = typeof packet.item === "string" ? packet.item.split(',') : packet.item;
+        await OBR.scene.items.updateItems(filter, (items) => {
+            for(const item of items) {
+                let vector;
+                switch(packet.key) {
+                    case "name":
+                        item.name = packet.value;
+                        break;
+                    case "visible":
+                        item.visible = toBool(packet.value);
+                        break;
+                    case "locked":
+                        item.visible = toBool(packet.value);
+                        break;
+                    case "zIndex":
+                        item.zIndex = parseFloat(packet.value) || item.zIndex;
+                        break;
+                    case "position":
+                        if(typeof packet.value !== "string") return;
+                        vector = packet.value.split(' ').map(v => parseFloat(v));
+                        if(vector.length < 2) return;
+                        item.scale = { x: vector[0], y: vector[1] };
+                        break;
+                    case "rotation":
+                        item.rotation = parseFloat(packet.value) || item.rotation;
+                        break;
+                    case "scale":
+                        if(typeof packet.value !== "string") return;
+                        vector = packet.value.split(' ').map(v => parseFloat(v));
+                        if(vector.length < 2) return;
+                        item.scale = { x: vector[0] || item.scale.x, y: vector[1] || item.scale.y};
+                        break;
+                    case "layer":
+                        item.layer = packet.value;
+                        break;
+                    case "attachedTo":
+                        item.attachedTo = packet.value;
+                        break;
+                    case "disableHit":
+                        item.visible = toBool(packet.value);
+                        break;
+                    case "disableAutoZIndex":
+                        item.visible = toBool(packet.value);
+                        break;
+                }
+            }
+        });
     }
 }
