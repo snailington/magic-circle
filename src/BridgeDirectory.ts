@@ -28,7 +28,7 @@ export const bridgeDirectory: Array<BridgeDefinition> = [
     },{
         id: "obbeyond20",
         name: "Owlbear-Beyond20",
-    description: "Integration with the Owlbear-supporting fork of Beyond20. (https://github.com/gludington/Beyond20)",
+        description: "Integration with the Owlbear-supporting fork of Beyond20. (https://github.com/gludington/Beyond20)",
         type: OBBeyond20,
     
         args: []
