@@ -12,10 +12,22 @@ export default function ControlPanel() {
         })
     }
 
+    function copyId() {
+        OBR.player.getSelection().then((selection) => {
+            if(!selection) {
+                OBR.notification.show("Please select an item before clicking copy button", "INFO");
+                return;
+            }
+            navigator.clipboard.writeText(selection.join(','));
+            OBR.notification.show("Item ID(s) copied to clipboard");
+        });
+    }
+
     return (
         <div id="control-panel">
             <button className="btn-new-source" onClick={newSource}>New Souce</button>
             <StatusLine/>
+            <button className="btn-copy-id" onClick={copyId}>⎘</button>
         </div>
     )
 }
