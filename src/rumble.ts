@@ -11,7 +11,8 @@ export async function rumbleRouting(msg: MsgRPC) {
     
     const md: Partial<Metadata> = {};
     md["com.battle-system.friends/metadata_chatlog"] = {
-        chatlog: `rolled ${msg.text} (${MagicCircle.toDiceString(rollInfo)} → [${rollInfo.results?.join(',')}]) for ${rollInfo.total}`,
+        chatlog: `rolled ${msg.text} (${MagicCircle.toDiceString(rollInfo)} → ` +
+            `[${rollInfo.results?.join('-')}]) for ${rollInfo.total}!`,
         sender: `${msg.author}`,
         targetId: msg.whisper || "0000",
         created: new Date().toISOString()
