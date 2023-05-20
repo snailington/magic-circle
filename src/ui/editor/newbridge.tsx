@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client'
 import BridgeBuilderApp from './BridgeBuilderApp.tsx'
-import WaitForOwlbear from "../configurator/WaitForOwlbear.tsx";
+import WaitForOwlbear from "../WaitForOwlbear.tsx";
 
 import BridgeEditorApp from "./BridgeEditorApp.tsx";
 import {BridgeConfig, getConfig} from "../../BridgeConfig.ts";

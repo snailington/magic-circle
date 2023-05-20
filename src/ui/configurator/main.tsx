@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
-import WaitForOwlbear from "./WaitForOwlbear.tsx";
+import WaitForOwlbear from "../WaitForOwlbear.tsx";
 import {BridgeStatusClient} from "../../BridgeStatus.ts";
 import OBR from "@owlbear-rodeo/sdk";
 

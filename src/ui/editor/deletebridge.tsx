@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client'
-import WaitForOwlbear from "../configurator/WaitForOwlbear.tsx";
+import WaitForOwlbear from "../WaitForOwlbear.tsx";
 import BridgeDeleterApp from "./BridgeDeleterApp.tsx";
 import "../common.css"
 import "./index.css"
