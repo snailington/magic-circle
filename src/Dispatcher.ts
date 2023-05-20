@@ -4,6 +4,7 @@ import OBR from "@owlbear-rodeo/sdk";
 import {BridgeConfig, getConfig} from "./BridgeConfig.ts";
 import {bridgeFactory} from "./BridgeFactory.ts";
 import {SetItemRPC} from "magic-circle-api"
+import {rumbleRouting} from "./rumble.ts";
 
 class BridgeInfo {
     config: BridgeConfig;
@@ -196,7 +197,9 @@ export class Dispatcher {
                     await this.dispatchSetItem(packet as SetItemRPC);
                     break;
                 case "msg":
-                    await MagicCircle.sendMessage(packet as (MsgRPC | MsgRPC[]));
+                    await MagicCircle.sendMessage(packet as (MsgRPC));
+                    if(window.localStorage.getItem("rumbleRouting"))
+                        await rumbleRouting(packet as MsgRPC);
                     break;
                 case "error":
                     this.handleError(source.config.name as string, packet);

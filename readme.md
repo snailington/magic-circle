@@ -13,6 +13,7 @@ Magic Circle is an Owlbear Rodeo extension that provides an RPC interface to ext
 
 ## Compatible Extensions
  - **[Sending Stones](https://github.com/snailington/sending-stones)**: Proof of concept but reasonably functional message log
+ - **[Rumble!](https://extensions.owlbear.rodeo/rumble)**: Que's great chat extension. Open the Magic Circle options menu and check "Route to Rumble" to dispatch messages to Rumble's RPC endpoint.
 
 ## Compatible Sources
  - **[ob-remote](https://github.com/snailington/ob-remote)**: CLI program for remotely controlling Owlbear Rodeo via RPC. Includes a D&D Beyond campaign log proxy.

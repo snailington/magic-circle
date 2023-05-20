@@ -23,9 +23,19 @@ export default function ControlPanel() {
         });
     }
 
+    function showOptions() {
+        OBR.modal.open({
+            id: "moe.snail.magic-cricle/options",
+            url: "/options.html",
+            height: 600,
+            width: 450
+        });
+    }
+
     return (
         <div id="control-panel">
             <button className="btn-new-source" onClick={newSource}>New Souce</button>
+            <button className="btn-options" onClick={showOptions}>⚙</button>
             <StatusLine/>
             <button className="btn-copy-id" onClick={copyId}>⎘</button>
         </div>
