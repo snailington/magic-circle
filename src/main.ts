@@ -2,6 +2,7 @@ import './style.css'
 import OBR from "@owlbear-rodeo/sdk";
 import {Dispatcher} from "./Dispatcher.ts";
 import {BridgeStatusServer} from "./BridgeStatus.ts";
+import {rumbleRouting} from "./rumble.ts";
 
 OBR.onReady(async () => {
   await contention();
@@ -9,6 +10,7 @@ OBR.onReady(async () => {
   const dispatcher = new Dispatcher();
   const statusServer = new BridgeStatusServer();
 
+  dispatcher.onmessage = rumbleRouting;
   statusServer.start(dispatcher);
   dispatcher.reloadConfig();
 })

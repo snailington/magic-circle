@@ -1,5 +1,6 @@
 import OBR, {Metadata} from "@owlbear-rodeo/sdk";
-import MagicCircle, {MsgRPC, RollInfo} from "magic-circle-api";
+import MagicCircle, {MsgRPC, RollInfo, RPC} from "magic-circle-api";
+import {BridgeInfo} from "./Dispatcher.ts";
 
 interface RumbleMsg {
     chatlog: string,
@@ -11,7 +12,11 @@ interface RumbleMsg {
 /*
  * Special case routing to send dice messages to Rumble! chat
  */
-export async function rumbleRouting(msg: MsgRPC) {
+export async function rumbleRouting(_: string, rpc: RPC) {
+    if(window.localStorage.getItem("rumbleRouting") != "on") return;
+    if(rpc.cmd != "msg") return;
+
+    const msg = rpc as MsgRPC;
     const toRumble: Partial<RumbleMsg> = {
         targetId: msg.whisper || "0000",
         sender: msg.author,
