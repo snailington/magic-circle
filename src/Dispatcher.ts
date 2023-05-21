@@ -159,6 +159,9 @@ export class Dispatcher {
             case "get":
                 if(!info.readAccess) return null;
                 break;
+            case "msg":
+                if(!packet.author) packet.author = info.config.name;
+                break;
             case undefined:
                 return null;
         }
