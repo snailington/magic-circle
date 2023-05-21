@@ -14,3 +14,23 @@
     float: left;
     clear: right;
 }
+
+textarea {
+    width: 100%;
+    height: 12ex;
+
+    resize: none;
+    border-radius: 8px;
+
+    color: rgba(255, 255, 255, 0.85);
+    background: #2d3143;
+}
+
+.theme-light textarea {
+    background: transparent;
+    color: black;
+}
+
+.theme-light button:disabled {
+    color: #999999;
+}
