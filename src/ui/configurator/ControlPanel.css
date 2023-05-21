@@ -7,11 +7,20 @@
     background: #1e2231;
 }
 
-.btn-new-source {
+#left-buttons {
+    display: contents;
+}
+
+#left-buttons > * {
     border-left: none;
     border-bottom: none;
-    border-top-right-radius: 8px;
+}
 
+#left-buttons > :last-child {
+    border-top-right-radius: 8px;
+}
+
+.btn-new-source {
     flex: 2;
 }
 

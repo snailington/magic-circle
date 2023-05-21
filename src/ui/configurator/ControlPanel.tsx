@@ -34,8 +34,10 @@ export default function ControlPanel() {
 
     return (
         <div id="control-panel">
-            <button className="btn-new-source" onClick={newSource}>New Souce</button>
-            <button className="btn-options" onClick={showOptions}>⚙</button>
+            <div id="left-buttons">
+                <button className="btn-new-source" onClick={newSource}>New Souce</button>
+                <button className="btn-options" onClick={showOptions}>⚙</button>
+            </div>
             <StatusLine/>
             <button className="btn-copy-id" onClick={copyId}>⎘</button>
         </div>
