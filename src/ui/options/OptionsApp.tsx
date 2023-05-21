@@ -1,5 +1,6 @@
-import {ChangeEvent, ReactNode, useState} from "react";
+import {ChangeEvent, ReactNode} from "react";
 import {Option, optionsList} from "./options.ts";
+import "./OptionsApp.css";
 
 export default function OptionsApp() {
     function generateOptions(option: Option, index: number): ReactNode {
@@ -23,10 +24,8 @@ export default function OptionsApp() {
         
         return (
             <div key={id} className="option-row">
-                <div>
-                    <label htmlFor={id}>{option.name}</label>
-                    {inputElement}
-                </div>
+                <label htmlFor={id}>{option.name}</label>
+                {inputElement}
                 <div>
                     {option.description}
                 </div>
