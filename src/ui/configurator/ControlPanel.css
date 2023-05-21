@@ -3,8 +3,16 @@
     background: #2d3143;
 }
 
+.theme-light #control-panel {
+    background: #CCCCFF;
+}
+
 #control-panel button:hover {
     background: #1e2231;
+}
+
+.theme-light #control-panel button:hover {
+    background: #B0B0FF;
 }
 
 #left-buttons {

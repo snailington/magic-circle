@@ -6,6 +6,15 @@
     scrollbar-color: #bb99ff #222639;
 }
 
+.theme-dark {
+    background-color: #222639;
+}
+
+.theme-light {
+    background-color: #f0f2f7;
+    color: black;
+}
+
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -31,6 +40,15 @@ button:hover {
 
 button:disabled {
     color: rgba(255, 255, 255, 0.40);
+}
+
+.theme-light button {
+    color: black;
+    border: 1px solid #000022;
+}
+
+.theme-light button:hover {
+    background: #B0B0FF;;
 }
 
 button:disabled:hover {
