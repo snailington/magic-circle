@@ -1,5 +1,5 @@
 import BridgeList from "./BridgeList.tsx";
-import OwlbearTheme from "./OwlbearTheme.tsx";
+import OwlbearTheme from "../OwlbearTheme.tsx";
 import ControlPanel from "./ControlPanel.tsx";
 import "./App.css"
 

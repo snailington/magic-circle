@@ -6,12 +6,15 @@
     scrollbar-color: #bb99ff #222639;
 }
 
-.theme-dark {
+.main .theme-dark {
     background-color: #222639;
 }
 
-.theme-light {
+.main .theme-light {
     background-color: #f0f2f7;
+}
+
+.theme-light {
     color: black;
 }
 

@@ -1,6 +1,7 @@
 import {ChangeEvent, ReactNode} from "react";
 import {Option, optionsList} from "./options.ts";
 import "./OptionsApp.css";
+import OwlbearTheme from "../OwlbearTheme.tsx";
 
 export default function OptionsApp() {
     function generateOptions(option: Option, index: number): ReactNode {
@@ -23,16 +24,18 @@ export default function OptionsApp() {
         const inputElement = <input id={id} type={option.type} {...inputAttr}></input>;
         
         return (
-            <>
-                <h1>Magic Circle Options</h1>
-                <div key={id} className="option-row">
-                    <label htmlFor={id}>{option.name}</label>
-                    {inputElement}
-                    <div>
-                        {option.description}
+            <OwlbearTheme>
+                <>
+                    <h1>Magic Circle Options</h1>
+                    <div key={id} className="option-row">
+                        <label htmlFor={id}>{option.name}</label>
+                        {inputElement}
+                        <div>
+                            {option.description}
+                        </div>
                     </div>
-                </div>
-            </>
+                </>
+            </OwlbearTheme>
         );
     }
     
