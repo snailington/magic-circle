@@ -11,5 +11,11 @@ export const optionsList: Option[] = [
         description: "If enabled, incoming message events will be routed to Rumble! chat.",
         key: "rumbleRouting",
         type: "checkbox"
+    },
+    {
+        name: "Test textbox",
+        description: "just a box",
+        key: "testValue",
+        type: "text"
     }
 ];
