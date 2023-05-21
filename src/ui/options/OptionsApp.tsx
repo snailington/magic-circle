@@ -23,14 +23,17 @@ export default function OptionsApp() {
         const inputElement = <input id={id} type={option.type} {...inputAttr}></input>;
         
         return (
-            <div key={id} className="option-row">
-                <label htmlFor={id}>{option.name}</label>
-                {inputElement}
-                <div>
-                    {option.description}
+            <>
+                <h1>Magic Circle Options</h1>
+                <div key={id} className="option-row">
+                    <label htmlFor={id}>{option.name}</label>
+                    {inputElement}
+                    <div>
+                        {option.description}
+                    </div>
                 </div>
-            </div>
-        )
+            </>
+        );
     }
     
     return (
