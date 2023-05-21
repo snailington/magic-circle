@@ -1,22 +1,7 @@
 import {ReactNode} from "react";
+import {Option, optionsList} from "./options.ts";
 
 export default function OptionsApp() {
-    interface Option {
-        name: string,
-        description: string,
-        key: string,
-        type: "text" | "checkbox",
-    }
-    
-    const options: Option[] = [
-        {
-            name: "Route to Rumble",
-            description: "If enabled, incoming message events will be routed to Rumble! chat.",
-            key: "rumbleRouting",
-            type: "checkbox"
-        }
-    ];
-    
     function generateOptions(option: Option, index: number): ReactNode {
         const id = "option-" + index;
         const currentValue = window.localStorage.getItem(option.key);
@@ -45,7 +30,7 @@ export default function OptionsApp() {
     
     return (
         <form>
-            {options.map((o, i) => generateOptions(o, i))}
+            {optionsList.map((o, i) => generateOptions(o, i))}
         </form>
     )
 }
