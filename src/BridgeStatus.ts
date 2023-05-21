@@ -29,8 +29,20 @@ export class BridgeStatusServer {
         OBR.player.getConnectionId().then((id) => this.connectionId = id);
 
         this.dispatcher = dispatcher;
-        dispatcher.onmessage = this.dispatchTap.bind(this);
-        dispatcher.onerror = this.sendError.bind(this);
+
+        if(dispatcher.onmessage) {
+            const oldHandler = dispatcher.onmessage;
+            dispatcher.onmessage = (s, p) => { oldHandler(s, p); this.dispatchTap(s, p); }
+        } else {
+            dispatcher.onmessage = this.dispatchTap.bind(this);
+        }
+
+        if(dispatcher.onerror) {
+            const oldHandler = dispatcher.onerror;
+            dispatcher.onerror = (s, p, e) => { oldHandler(s, p, e); this.sendError(s, p, e); }
+        } else {
+            dispatcher.onerror = this.sendError.bind(this);
+        }
     }
 
     private dispatchTap(sender: string, rpc: RPC) {
@@ -50,12 +62,13 @@ export class BridgeStatusServer {
         }));
     }
 
-    private sendError(sender: string, rpc: RPC | null) {
+    private sendError(sender: string, rpc: RPC | null, error: any) {
         this.channel.postMessage(JSON.stringify({
             connection: this.connectionId,
             type: "error",
             bridge: sender,
-            cmd: rpc?.cmd
+            cmd: rpc?.cmd,
+            msg: error
         }));
     }
 }
