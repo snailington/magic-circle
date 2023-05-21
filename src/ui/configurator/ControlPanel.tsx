@@ -27,8 +27,8 @@ export default function ControlPanel() {
         OBR.modal.open({
             id: "moe.snail.magic-cricle/options",
             url: "/options.html",
-            height: 600,
-            width: 450
+            height: 150,
+            width: 600
         });
     }
 
