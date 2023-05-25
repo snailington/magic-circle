@@ -1,6 +1,6 @@
 import {IBridge} from "./drivers/IBridge.ts";
 import MagicCircle, {ConfigRPC, MsgRPC, RPC, SetRPC} from "magic-circle-api";
-import OBR from "@owlbear-rodeo/sdk";
+import OBR, {Player} from "@owlbear-rodeo/sdk";
 import {BridgeConfig, getConfig} from "./BridgeConfig.ts";
 import {bridgeFactory} from "./BridgeFactory.ts";
 import {SetItemRPC} from "magic-circle-api"
@@ -199,7 +199,7 @@ export class Dispatcher {
                     await this.dispatchSetItem(packet as SetItemRPC);
                     break;
                 case "msg":
-                    await MagicCircle.sendMessage(packet as (MsgRPC));
+                    await this.dispatchMsg(packet as MsgRPC);
                     break;
                 case "error":
                     this.handleError(source.config.name as string, packet);
@@ -221,6 +221,50 @@ export class Dispatcher {
                 this.reloadConfig();
                 break;
         }
+    }
+
+    private async dispatchMsg(packet: MsgRPC) {
+        let player: string | undefined;
+
+        let attributionTable: {in: string|RegExp, out: string}[] = [ { in: /.*/, out: "auto" } ];
+
+        try {
+            const attr = window.localStorage.getItem("magic-circle-attribution");
+            if(attr) {
+                attributionTable = JSON.parse(attr);
+                for(const line of attributionTable) {
+                    const lin = line.in as string;
+                    if(lin[0] == '/' && lin[lin.length-1] == '/')
+                        line.in = new RegExp(lin.substring(1, lin.length-1));
+                }
+            }
+        } catch {
+            console.error("magic-circle: attribution table error");
+        }
+
+        for(const line of attributionTable) {
+            if((line.in instanceof RegExp && !packet.author?.match(line.in)) ||
+                (typeof line.in == "string" && line.in != packet.author)) continue;
+
+            let found: Player | undefined;
+            switch(line.out) {
+                case "auto":
+                    if(packet.author) found = await MagicCircle.findPlayer(packet.author);
+                    player = found ? found.id : OBR.player.id;
+                    break;
+                case "me":
+                    player = OBR.player.id;
+                    break;
+                case "none":
+                    player = "";
+                    break;
+                    default:
+                        player = line.out;
+            }
+        }
+
+        console.log(player);
+        await MagicCircle.sendMessage(packet, player);
     }
 
     private async dispatchSet(packet: SetRPC) {

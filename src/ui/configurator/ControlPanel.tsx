@@ -32,10 +32,20 @@ export default function ControlPanel() {
         });
     }
 
+    function showAttrib() {
+        OBR.modal.open({
+            id: "moe.snail.magic-circle/attribution",
+            url: "/attrib.html",
+            height: 800,
+            width: 600
+        })
+    }
+
     return (
         <div id="control-panel">
             <div id="left-buttons">
                 <button className="btn-new-source" onClick={newSource}>New Souce</button>
+                <button className="btn-attrib" onClick={showAttrib}>A</button>
                 <button className="btn-options" onClick={showOptions}>⚙</button>
             </div>
             <StatusLine/>
