@@ -12,7 +12,8 @@ export default defineConfig({
         background: resolve(__dirname, "background.html"),
         newbridge: resolve(__dirname, "newbridge.html"),
         deletebridge: resolve(__dirname, "deletebridge.html"),
-        options: resolve(__dirname, "options.html")
+        options: resolve(__dirname, "options.html"),
+        attribution: resolve(__dirname, "attrib.html")
       }
     }
   }
